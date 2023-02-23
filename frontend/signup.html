@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form id="form" action="">
+        <label for="Sign up">Sign Up:</label><br>
+        <input type="text" id="name" placeholder="Enter your name here"><br>
+        <label for="Email">E-mail:</label><br>
+        <input type="email" name="email" id="email" placeholder="Enter upur email here"><br>
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password" placeholder="Enter your password here"><br>
+        <label for="age">Age:</label><br>
+        <input type="number" id="age" name="Age" placeholder="Enter your age here"><br>
+        <label for="Gender">Gender:</label><br>
+        <input type="text" id="gender" name="Gender" placeholder="Enter your gender here"><br>
+        <input type="submit" placeholder="Sign Up"><br>
+    </form>
+</body>
+</html>
+<script>
+    let form=document.getElementById("form");
+    form.addEventListener("submit",(e)=>{
+        e.preventDefault();
+        let payload={
+            name:form.name.value,
+            email:form.email.value,
+            password:form.password.value,
+            age:form.age.value,
+            gender:form.gender.value
+        }
+
+        console.log(payload);
+
+        // fetch("https://localstorage")
+    })
+</script>
