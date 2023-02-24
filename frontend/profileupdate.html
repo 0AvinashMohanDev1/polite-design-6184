@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+    <body>
+        <h1>Update Here</h1>
+        <form id="form" action="">
+            <label for="Sign up">Sign Up:</label><br>
+            <input type="text" id="name" placeholder="Enter your name here"><br>
+            <label for="Email">E-mail:</label><br>
+            <input type="email" name="email" id="email" placeholder="Enter upur email here"><br>
+            <label for="password">Password:</label><br>
+            <input type="password" id="password" name="password" placeholder="Enter your password here"><br>
+            <label for="age">Age:</label><br>
+            <input type="number" id="age" name="Age" placeholder="Enter your age here"><br>
+            <label for="Gender">Gender:</label><br>
+            <input type="text" id="gender" name="Gender" placeholder="Enter your gender here"><br>
+            <input type="submit" placeholder="Sign Up"><br>
+        </form>
+    </body>
+</html>
+<script>
+    let form=document.getElementById("form");
+    form.addEventListener("submit",(e)=>{
+        e.preventDefault();
+        // let payload={
+        //     name:form.name.value,
+        //     age:form.age.value,
+        //     gender:form.age.value,
+        //     email:form.gender.value,
+        //     password:form.password.value
+        // }
+        let payload={};
+        if(form.name.value) payload.name=form.name.value;
+        if(form.age.value) payload.age=form.age.value;
+        if(form.gender.value) payload.gender=form.gender.value;
+        if(form.email.value) payload.email=form.email.value;
+        if(form.password.value) payload.password=form.password.value;
+        if(payload){
+            fetch("http://localhost:2100/user/update",{
+            method:"PUT",
+            headers:{
+                // "Content-type":"application/json",
+                "Content-type":"application/json",
+                "authorization":localStorage.getItem("token")
+            },
+            body:JSON.stringify(payload)
+        })
+        .then(res=>res.json())
+        .then(res=>{
+            console.log(res);
+            form.name.value='';
+            form.email.value='';
+            form.password.value='';
+            form.age.value='';
+            form.gender.value='';
+        })
+        .catch(err=>console.log(err))
+        }
+    })
+</script>
