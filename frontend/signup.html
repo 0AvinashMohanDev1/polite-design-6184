@@ -33,9 +33,18 @@
             age:form.age.value,
             gender:form.gender.value
         }
-
+        
         console.log(payload);
 
-        // fetch("https://localstorage")
+        fetch("http://localhost:2100/user/register",{
+            method:"POST",
+            headers:{
+                "Content-type":"application/json"
+            },
+            body:JSON.stringify(payload)
+        })
+        .then(res=>res.json())
+        .then(res=>console.log(res))
+        .catch(err=>console.log(err));
     })
 </script>
