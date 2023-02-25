@@ -15,11 +15,13 @@ user.get("/",async(req,res)=>{
     }
 })
 
+/** creating new user id */
 user.post("/register",async(req,res)=>{
     try{
         let payload=req.body;
         let data=await UserModel.find({"email":payload.email});
-        if(data) res.send({"msg":"user alreadyy registered"})
+        console.log(data);
+        if(data.length>0) res.send({"msg":"user already registered"})
         else{
             bcrypt.hash(payload.password, 5, function(err, hash) {
                 // Store hash in your password DB.
@@ -40,6 +42,8 @@ user.post("/register",async(req,res)=>{
     }
 })
 
+/** loging in the resgistered user */
+
 user.post("/login",async(req,res)=>{
     try{
         let payload=req.body;
@@ -49,6 +53,7 @@ user.post("/login",async(req,res)=>{
         if(data.length>0){
             console.log(data)
             bcrypt.compare(payload.password,data[0].password,(err,result)=>{
+                console.log(result);
                 if(result){
                     let token=jwt.sign({"userID":data[0]._id},process.env.jwtSecretKey);
                     res.send({"msg":"logged in","token":token})
@@ -64,11 +69,42 @@ user.post("/login",async(req,res)=>{
     }
 })
 
+/** showing the current logged user data */
+
+user.post("/one",authentication,async(req,res)=>{
+    console.log(req.body,"hello i am body");
+    try{
+        let data=await UserModel.findById({"_id":req.body.userID});
+        console.log(data);
+        res.send(data);
+    }catch(err){
+        res.send({"error":err.message});
+    }
+})
+
+/** updating the users data */
+
 user.put("/update",authentication,async(req,res)=>{
-    let payload=req.body;
-    console.log(payload);
-    await UserModel.findByIdAndUpdate(payload.userID,payload);
-    res.send({"msg":"user updated"})
+    
+    if(req.body.password){
+        await bcrypt.hash(req.body.password, 5, async(err, hash)=>{
+            // Store hash in your password DB.
+            if(hash){
+                req.body.password=hash;
+                console.log({"msg":"I am here ","hash":hash,"pass":req.body.password})
+                await UserModel.findByIdAndUpdate(req.body.userID,req.body);
+                res.send({"msg":"user updated"})
+            }else{
+                console.log("went wrong here");
+            }
+        });
+    }else{
+        let payload=req.body;
+        console.log(payload);
+        await UserModel.findByIdAndUpdate(payload.userID,payload);
+        res.send({"msg":"user updated"})
+    }
+    
 })
 
 module.exports={

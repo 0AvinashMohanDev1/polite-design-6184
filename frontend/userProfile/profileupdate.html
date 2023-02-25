@@ -27,13 +27,6 @@
     let form=document.getElementById("form");
     form.addEventListener("submit",(e)=>{
         e.preventDefault();
-        // let payload={
-        //     name:form.name.value,
-        //     age:form.age.value,
-        //     gender:form.age.value,
-        //     email:form.gender.value,
-        //     password:form.password.value
-        // }
         let payload={};
         if(form.name.value) payload.name=form.name.value;
         if(form.age.value) payload.age=form.age.value;
