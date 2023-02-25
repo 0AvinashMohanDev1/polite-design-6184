@@ -2,17 +2,18 @@ const mongoose=require("mongoose");
 
 
 
-const userSchema=mongoose.Schema({
-    "url":{type:url,required:true},
+const productSchema=mongoose.Schema({
+    "url":{type:String,required:true},
     "title":{type:String,required:true},
     "rating":{type:Number,required:true},
     "price":{type:Number,required:true},
     "category":{type:String,required:true},
-    "details":{type:String,required:true}
+    "details":{type:String,required:true},
+    "count":{type:Number,required:true}
 })
 
-const UserModel=mongoose.model("ProjectProduct",userSchema);
+const ProductModel=mongoose.model("ProjectProduct",productSchema);
 
 module.exports={
-    UserModel
+    ProductModel
 }

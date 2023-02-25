@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="submit" id="form">
+        <label for="">add url link here:</label><br>
+        <input type="text" required id="url" placeholder="enter product link"><br>
+        <label for="">add rating here:</label><br>
+        <input type="number" required id="rating" placeholder="enter rating here"><br>
+        <label for="">add title here:</label><br>
+        <input type="text" required id="title" placeholder="enter title here"><br>
+        <label for="">Price here:</label><br>
+        <input type="number" required id="price" placeholder="enter price here"><br>
+        <label for="">Category here:</label><br>
+        <input type="text" required id="category" placeholder="enter category here"><br>
+        <label for="">details here:</label><br>
+        <input type="text" required id="details" placeholder="enter details here"><br>
+        <label for="">No. of items here:</label><br>
+        <input type="number" id="count" placeholder="please enter count of itmes here"><br>
+        <input type="submit">
+    </form>
+</body>
+</html>
+<script>
+    let form=document.getElementById("form");
+    form.addEventListener("submit",(e)=>{
+        e.preventDefault();
+        let payload={
+            title:form.title.value,
+            rating:form.rating.value,
+            price:form.price.value,
+            category:form.category.value,
+            details:form.details.value,
+            count:form.count.value,
+            url:form.url.value
+        }
+        console.log(payload);
+        fetch("http://localhost:2100/product/addProduct",{
+            method:"POST",
+            headers:{
+                "Content-type":"application/json"
+            },
+            body:JSON.stringify(payload)
+        })
+        .then(res=>res.json())
+        .then(res=>console.log(res))
+        .catch(err=>console.log(err))
+    })
+</script>

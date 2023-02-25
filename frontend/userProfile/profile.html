@@ -24,27 +24,26 @@
 </html>
 <script>
     let form=document.getElementById("form");
-    form.addEventListener("submit",(e)=>{
-        e.preventDefault();
-        let payload={
-            name:form.name.value,
-            email:form.email.value,
-            password:form.password.value,
-            age:form.age.value,
-            gender:form.gender.value
-        }
-        
-        console.log(payload);
-
-        fetch("http://localhost:2100/user/register",{
+    function output(){
+        fetch("http://localhost:2100/user/one",{
             method:"POST",
             headers:{
-                "Content-type":"application/json"
+                "Content-type":"application/json",
+                "authorization":localStorage.getItem("token")
             },
-            body:JSON.stringify(payload)
+            body:JSON.stringify({})
         })
         .then(res=>res.json())
-        .then(res=>console.log(res))
+        .then(res=>{
+            console.log(res);
+            form.name.value=res.name;
+            form.age.value=res.age;
+            form.email.value=res.email;
+            form.gender.value=res.gender;
+        })
         .catch(err=>console.log(err));
-    })
+    }
+    
+output();
+        
 </script>
