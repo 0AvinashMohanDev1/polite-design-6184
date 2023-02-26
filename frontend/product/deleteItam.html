@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <h2>Delete item from here</h2><br>
+        <label for="">give id of item:</label><br>
+        <input type="text" required id="item" placeholder="enter id here"><br>
+       
+        <button value="Delete" id="button" placeholder="Delete">Delete</button>
+    </div>
+</body>
+</html>
+<script>
+    let item=document.getElementById("item");
+    let button=document.getElementById("button");
+    button.addEventListener("click",(e)=>{
+        e.preventDefault();
+        let payload={};
+            id=item.value;
+            console.log(id);
+        fetch(`http://localhost:2100/product/deleteProduct/${id}`,{
+            method:"DELETE",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify(payload)
+        })
+        .then(res=>res.json)
+        .then(res=>console.log(res))
+        .catch(err=>console.log(err))
+
+    })
+</script>
