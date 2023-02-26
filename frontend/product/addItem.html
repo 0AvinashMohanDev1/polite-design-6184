@@ -8,6 +8,7 @@
 </head>
 <body>
     <form action="submit" id="form">
+        <h1>Add product here:</h1>
         <label for="">add url link here:</label><br>
         <input type="text" required id="url" placeholder="enter product link"><br>
         <label for="">add rating here:</label><br>
@@ -40,7 +41,7 @@
             url:form.url.value
         }
         console.log(payload);
-        fetch("http://localhost:2100/product/addProduct",{
+        fetch("https://blushing-red-swordfish.cyclic.app/product/addProduct",{
             method:"POST",
             headers:{
                 "Content-type":"application/json"

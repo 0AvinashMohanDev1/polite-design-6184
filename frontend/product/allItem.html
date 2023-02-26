@@ -5,11 +5,57 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        #container{
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+        }
+        img{
+            height: 400px;
+        }
+        nav{
+            background-color: cadetblue;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+        }
+    </style>
 </head>
 <body>
-    <div id="container">
-        <h1>All items here</h1>
-        <!-- <img src="https://www.yoox.com/images/items/13/13981921PB_14_f.jpg?impolicy=crop&width=387&height=490" alt="image"> -->
+    <nav>
+        <a href="../index.html">LOOKs</a>
+        <div>
+            <input type="search" name="" id="search">
+        <button id="button">search</button>
+        </div>
+        <a href="../userProfile/login.html">login</a>
+
+    </nav>
+    <div>
+        <div id="sorting">
+            <select name="" id="sortTitle" class="sort">
+                <option value="">Title</option>
+                <option value="increaseTitle">A-Z</option>
+                <option value="decreaseTitle">Z-A</option>
+            </select>
+
+            <select id="sortPrice" class="sort">
+                <option value=""> Price</option>
+                <option value="increasePrice">Low to High</option>
+                <option value="decreasePrice">High to Low</option>
+            </select>
+            
+            <select name="" id="sortRating" class="sort">
+                <option value="">Rating</option>
+                <option value="increaseRating">Low to High</option>
+                <option value="decreaseRating">High to Low</option>
+            </select>           
+        </div>
+        <div id="container">
+            <h1>All items here</h1>
+            <!-- <img src="https://www.yoox.com/images/items/13/13981921PB_14_f.jpg?impolicy=crop&width=387&height=490" alt="image"> -->
+        </div>
     </div>
 </body>
 </html>
@@ -17,23 +63,11 @@
 
 let data=[];
 let user='';
-// data.forEach(element => console.log(element))
    let container=document.getElementById("container");
-
-   /** getting all items*/
-fetch("http://localhost:2100/product/")
-.then(res=>res.json())
-.then(res=>{
-    data.push(...res);
-    console.log(data);
-    display(data);
-})
-.catch(err=>{
-    console.log(err);
-})
-
+   let search=document.getElementById("search");
+   let button=document.getElementById("button");
 /** getting the current user*/
-fetch("http://localhost:2100/user/one",{
+fetch("https://blushing-red-swordfish.cyclic.app/user/one",{
             method:"POST",
             headers:{
                 "Content-type":"application/json",
@@ -44,14 +78,87 @@ fetch("http://localhost:2100/user/one",{
         .then(res=>res.json())
         .then(res=>{
             console.log(res);
-            // form.name.value=res.name;
-            // form.age.value=res.age;
             user=res.email;
-            // form.gender.value=res.gender;
+            console.log(res);
         })
         .catch(err=>console.log(err));
 
+
+   /** getting all items*/
+fetch("https://blushing-red-swordfish.cyclic.app/product/")
+.then(res=>res.json())
+.then(res=>{
+    data.push(...res);
+    console.log(data);
+    display(data);
+})
+.catch(err=>{
+    console.log(err);
+})
+
+button.addEventListener("click",(e)=>{
+        let value=search.value;
+        fetch(`https://blushing-red-swordfish.cyclic.app/product/sub/${value}`)
+    .then(res=>res.json())
+    .then(res=>{
+    //     data.push(...res);
+    // console.log(data);
+    display(res);
+    })
+    .catch(err=>{
+        console.log(err);
+    })
+    })
+
+
+        document.querySelector("#sortTitle").addEventListener("change", () => {
+        let value = document.querySelector("#sortTitle").value;
+       console.log(value);
+        fetch(`https://blushing-red-swordfish.cyclic.app/product/${value}`)
+        .then(res=>res.json())
+        .then(res=>{
+            display(res);
+            console.log(res);
+        })
+        .catch(err=>{
+            console.log(err);
+        })
+    });
+
+        document.querySelector("#sortPrice").addEventListener("change", () => {
+        let value = document.querySelector("#sortPrice").value;
+       console.log(value);
+        fetch(`https://blushing-red-swordfish.cyclic.app/product/${value}`)
+        .then(res=>res.json())
+        .then(res=>{
+            display(res);
+            console.log(res);
+        })
+        .catch(err=>{
+            console.log(err);
+        })
+    });
+
+        document.querySelector("#sortRating").addEventListener("change", () => {
+        let value = document.querySelector("#sortRating").value;
+       console.log(value);
+        fetch(`https://blushing-red-swordfish.cyclic.app/product/${value}`)
+        .then(res=>res.json())
+        .then(res=>{
+            display(res);
+            console.log(res);
+        })
+        .catch(err=>{
+            console.log(err);
+        })
+    });
+
+
+
+
+
    function display(data){
+    container.innerHTML=null;
     data.forEach(item => {
         let card=document.createElement("div");
         card.setAttribute("class","card");
@@ -78,7 +185,7 @@ fetch("http://localhost:2100/user/one",{
             remove.addEventListener("click",(e)=>{
             e.preventDefault();
             let payload={};
-            fetch(`http://localhost:2100/product/deleteProduct/${id}`,{
+            fetch(`https://blushing-red-swordfish.cyclic.app/product/deleteProduct/${id}`,{
             method:"DELETE",
             headers:{
                 "Content-Type":"application/json"
@@ -88,6 +195,7 @@ fetch("http://localhost:2100/user/one",{
             .then(res=>res.json)
             .then(res=>console.log(res))
             .catch(err=>console.log(err))
+            window.location.href="./allItem.html"
 
             })
 
@@ -95,18 +203,6 @@ fetch("http://localhost:2100/user/one",{
             let update=document.createElement("button");
             update.innerText="update";
             
-            // update.addEventListener("click",(e)=>{
-            //     fetch(`http://localhost:2100/product/updateProduct/${id}`,{
-            // method:"PUT",
-            // headers:{
-            //     "Content-type":"application/json"
-            // },
-            // body:JSON.stringify(payload)
-            // })
-            // .then(res=>res.json())
-            // .then(res=>console.log(res))
-            // .catch(err=>console.log(err))
-            // })
             update.addEventListener("click",(e)=>{
                 localStorage.setItem("productId",id);
                 window.location.href="./updateItem.html"
@@ -118,7 +214,7 @@ fetch("http://localhost:2100/user/one",{
             let addToCart=document.createElement("button");
             addToCart.innerText="addToCart";
             card.append(image,title,rating,price,category,details,addToCart);
-        container.append(card);
+            container.append(card);
         }
 
         

@@ -8,7 +8,7 @@
 </head>
 <body>
     <div>
-        
+        <h1>Update Product by giving Id:</h1>
         <form action="submit" id="form">
             <label for="">please give product id here</label><br>
             <input type="text" required id="item" placeholder="product id"><br>
@@ -53,7 +53,7 @@
         if(form.count.value) payload.count=form.count.value
         if(form.url.value) payload.url=form.url.value
         console.log(payload,id);
-        fetch(`http://localhost:2100/product/updateProduct/${id}`,{
+        fetch(`https://blushing-red-swordfish.cyclic.app/product/updateProduct/${id}`,{
             method:"PUT",
             headers:{
                 "Content-type":"application/json"
@@ -66,5 +66,6 @@
             localStorage.setItem("productId",id);
             console.log(res)})
         .catch(err=>console.log(err))
+        window.location.href="./allItem.html"
     })
 </script>

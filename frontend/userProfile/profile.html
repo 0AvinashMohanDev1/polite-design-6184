@@ -12,20 +12,19 @@
         <input type="text" id="name" placeholder="Enter your name here"><br>
         <label for="Email">E-mail:</label><br>
         <input type="email" name="email" id="email" placeholder="Enter upur email here"><br>
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password" placeholder="Enter your password here"><br>
         <label for="age">Age:</label><br>
         <input type="number" id="age" name="Age" placeholder="Enter your age here"><br>
         <label for="Gender">Gender:</label><br>
         <input type="text" id="gender" name="Gender" placeholder="Enter your gender here"><br>
-        <input type="submit" placeholder="Sign Up"><br>
+        
     </form>
+    <button id="edit">edit</button>
 </body>
 </html>
 <script>
     let form=document.getElementById("form");
     function output(){
-        fetch("http://localhost:2100/user/one",{
+        fetch("https://blushing-red-swordfish.cyclic.app/user/one",{
             method:"POST",
             headers:{
                 "Content-type":"application/json",
@@ -43,7 +42,10 @@
         })
         .catch(err=>console.log(err));
     }
-    
+    let edit=document.getElementById("edit");
+    edit.addEventListener("click",(e)=>{
+        window.location.href="./profileUpdate.html"
+    })
 output();
         
 </script>

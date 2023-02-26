@@ -4,36 +4,156 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./index.css">
     <title>Document</title>
+    <style>
+        href,img{
+            pointer-events: hower;
+        }
+    </style>
 </head>
 <body>
-    <nav id="nave-1">
+    <nav id="nav-1">
         <a href="">customer care</a>
         <a href="./index.html">LOOKs</a>
         <a href="./userProfile/login.html">log in</a>
         <a href="./userProfile/signup.html">signup</a>
     </nav>
     <nav id="nav-2">
+        <img src="https://w7.pngwing.com/pngs/387/917/png-transparent-logo-fashion-graphic-design-glamour-look-miscellaneous-text-business.png" alt="LOOKs">
         <a href="./product/allItem.html">product</a>
-        <input type="search" name="" id="search">
+        <div>
+            <input type="search" name="" id="search">
+        <button id="button">search</button>
+        </div>
         <a href="./userProfile/profile.html">profile</a>
     </nav>
     <img src="https://www.yoox.com/images/yoox80/banners/6977_1_Trend_WM_Main.jpg?634485886869569819#width=1380&height=637" alt="image">
-    <div id="side">
-        <img src="https://www.yoox.com/images/yoox80/banners/6824_11_NewArrivals_W_HL.jpg?634485886869569819#width=430&height=600" alt="left1">
-        <img src="https://www.yoox.com/images/yoox80/banners/6895_9_GenZ_W_HL.jpg?634485886869569819#width=430&height=600" alt="right2">
+    <div id="container">
+       
+        <div id="side">
+            <img src="https://www.yoox.com/images/yoox80/banners/6824_11_NewArrivals_W_HL.jpg?634485886869569819#width=430&height=600" alt="left1">
+            <img src="https://www.yoox.com/images/yoox80/banners/6895_9_GenZ_W_HL.jpg?634485886869569819#width=430&height=600" alt="right2">
+        </div>
+        <div id="middle">
+            <img src="https://www.yoox.com/images/yoox80/banners/6825_5_Woolrich_W_Tris.jpg?634485886869569819#width=473&height=660" alt="left1">
+            <img src="https://www.yoox.com/images/yoox80/banners/6825_2_Seletti_LoveBloom_ADV.png?634485886869569819#width=473&height=660" alt="middle1">
+            <img src="https://www.yoox.com/images/yoox80/banners/6825_5_NewBalance_Tris_W.jpg?634485886869569819#width=473&height=660" alt="right1">
+        </div>
+        <div>
+            <img src="https://www.yoox.com/images/yoox80/banners/6833_2_8byooxSS23_Special_WM.jpg?634485886869569819#width=930&height=660" alt="">
+        </div>
+        <div>
+            <img src="https://www.yoox.com/images/yoox80/banners/6824_5_SneakerCorner_Half_W_WW.jpg?634485886869569819#width=690&height=637" alt="">
+            <img src="https://www.yoox.com/images/yoox80/banners/5460_1_8bycococapitan_Bottom_W.jpg?634485886869569819#width=690&height=637" alt="">
+        </div>
     </div>
-    <div id="middle">
-        <img src="https://www.yoox.com/images/yoox80/banners/6825_5_Woolrich_W_Tris.jpg?634485886869569819#width=473&height=660" alt="left1">
-        <img src="https://www.yoox.com/images/yoox80/banners/6825_2_Seletti_LoveBloom_ADV.png?634485886869569819#width=473&height=660" alt="middle1">
-        <img src="https://www.yoox.com/images/yoox80/banners/6825_5_NewBalance_Tris_W.jpg?634485886869569819#width=473&height=660" alt="right1">
-    </div>
-    <div>
-        <img src="https://www.yoox.com/images/yoox80/banners/6833_2_8byooxSS23_Special_WM.jpg?634485886869569819#width=930&height=660" alt="">
-    </div>
-    <div>
-        <img src="https://www.yoox.com/images/yoox80/banners/6824_5_SneakerCorner_Half_W_WW.jpg?634485886869569819#width=690&height=637" alt="">
-        <img src="https://www.yoox.com/images/yoox80/banners/5460_1_8bycococapitan_Bottom_W.jpg?634485886869569819#width=690&height=637" alt="">
-    </div>
+    <footer>
+        <h2>LOOKs</h2>
+        <p>Looks is a fashion clothing selling e-commerce site. </p>
+        <p>you can download LOOKs from android/ apple store</p>
+    </footer>
 </body>
 </html>
+<script>
+    let container=document.getElementById("container");
+    let search=document.getElementById("search");
+    let button=document.getElementById("button");
+
+/** getting the current user*/
+fetch("https://blushing-red-swordfish.cyclic.app/user/one",{
+            method:"POST",
+            headers:{
+                "Content-type":"application/json",
+                "authorization":localStorage.getItem("token")
+            },
+            body:JSON.stringify({})
+        })
+        .then(res=>res.json())
+        .then(res=>{
+            console.log(res);
+            user=res.email;
+            console.log(res);
+        })
+        .catch(err=>console.log(err));
+
+/** click on button*/
+    button.addEventListener("click",(e)=>{
+        let value=search.value;
+        fetch(`https://blushing-red-swordfish.cyclic.app/product/sub/${value}`)
+    .then(res=>res.json())
+    .then(res=>{
+        console.log(res);
+        display(res);
+    })
+    .catch(err=>{
+        console.log(err);
+    })
+    })
+
+    function display(data){
+    container.innerHTML=null;
+    data.forEach(item => {
+        let card=document.createElement("div");
+        card.setAttribute("class","card");
+        let image=document.createElement("img");
+        image.setAttribute("id","image");
+        image.setAttribute("src",`${item.url}`);
+        image.setAttribute("alt","image");
+        let title=document.createElement("h2");
+        title.innerText=item.title;
+        let price=document.createElement("h3");
+        price.innerText="Rs."+item.price;
+        let rating=document.createElement("h3");
+        rating.innerText=item.rating+"⭐";
+        let category=document.createElement("p");
+        category.innerText=item.category;
+        let details=document.createElement("details");
+        details.innerText=item.details;
+
+        if(user==='admin@gmail.com'){
+            let remove=document.createElement("button");
+            remove.innerText="delete";
+            let id=item._id;
+
+            //delete the item from card
+            remove.addEventListener("click",(e)=>{
+            e.preventDefault();
+            let payload={};
+            fetch(`https://blushing-red-swordfish.cyclic.app/product/deleteProduct/${id}`,{
+            method:"DELETE",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify(payload)
+            })
+            .then(res=>res.json)
+            .then(res=>console.log(res))
+            .catch(err=>console.log(err))
+            window.location.href="./allItem.html"
+
+            })
+
+            //update the item from card
+            let update=document.createElement("button");
+            update.innerText="update";
+            
+            update.addEventListener("click",(e)=>{
+                localStorage.setItem("productId",id);
+                window.location.href="./updateItem.html"
+            })
+
+            card.append(image,title,rating,price,category,details,update,remove);
+            container.append(card);
+        }else{
+            let addToCart=document.createElement("button");
+            addToCart.innerText="addToCart";
+            card.append(image,title,rating,price,category,details,addToCart);
+            container.append(card);
+        }
+
+        
+        
+    })
+   }
+</script>

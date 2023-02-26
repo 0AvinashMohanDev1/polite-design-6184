@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        nav{
+            display: flex;
+            background-color: royalblue;
+            align-items: center;
+            justify-content: space-around;
+            height: 30px;
+        }
+        a{
+            color: white;
+        }
+        #container{
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+        }
+        #image{
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+    <a href="../index.html">LOOKs</a>
+    <a href="./deleteItam.html">Delete Product</a>
+    <a href="./addItem.html">Add Product</a>
+    <a href="./updateItem.html">Update Product</a>
+    </nav>
+    <div id="containerUser">
+        <h1>Total users: <span id="userSpan"></span></h1>
+        <h1>Total product: <span id="productSpan"></span></h1>
+    </div>
+    <div id="container"></div>
+</body>
+</html>
+<script>
+    let data=[];
+    let user='';
+    let container=document.getElementById("container");
+    let userSpan=document.getElementById("userSpan");
+    let productSpan=document.getElementById("productSpan");
+    fetch("https://blushing-red-swordfish.cyclic.app/user/")
+    .then(res=>res.json())
+    .then(res=>{
+        // console.log(res);
+        userSpan.innerText=res.data.length;
+    })
+    .catch(err=>console.log(err));
+
+    fetch("https://blushing-red-swordfish.cyclic.app/product/")
+    .then(res=>res.json())
+    .then(res=>{
+        // console.log(res);
+        productSpan.innerText=res.length;
+    })
+    .catch(err=>console.log(err));
+
+    fetch("https://blushing-red-swordfish.cyclic.app/product/")
+.then(res=>res.json())
+.then(res=>{
+    data.push(...res);
+    console.log(data);
+    display(data);
+})
+.catch(err=>{
+    console.log(err);
+})
+
+function display(data){
+    container.innerHTML=null;
+    data.forEach(item => {
+        let card=document.createElement("div");
+        card.setAttribute("class","card");
+        let image=document.createElement("img");
+        image.setAttribute("id","image")
+        image.setAttribute("src",`${item.url}`);
+        image.setAttribute("alt","image");
+        let title=document.createElement("h2");
+        title.innerText=item.title;
+        let price=document.createElement("h3");
+        price.innerText="Rs."+item.price;
+        let rating=document.createElement("h3");
+        rating.innerText=item.rating+"⭐";
+        let category=document.createElement("p");
+        category.innerText=item.category;
+        let details=document.createElement("details");
+        details.innerText=item.details;
+
+        if(user==='admin@gmail.com'){
+            let remove=document.createElement("button");
+            remove.innerText="delete";
+            let id=item._id;
+
+            //delete the item from card
+            remove.addEventListener("click",(e)=>{
+            e.preventDefault();
+            let payload={};
+            fetch(`https://blushing-red-swordfish.cyclic.app/product/deleteProduct/${id}`,{
+            method:"DELETE",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify(payload)
+            })
+            .then(res=>res.json)
+            .then(res=>console.log(res))
+            .catch(err=>console.log(err))
+            window.location.href="./allItem.html"
+
+            })
+
+            //update the item from card
+            let update=document.createElement("button");
+            update.innerText="update";
+            
+            update.addEventListener("click",(e)=>{
+                localStorage.setItem("productId",id);
+                window.location.href="./updateItem.html"
+            })
+
+            card.append(image,title,rating,price,category,details,update,remove);
+            container.append(card);
+        }else{
+            let addToCart=document.createElement("button");
+            addToCart.innerText="addToCart";
+            card.append(image,title,rating,price,category,details,addToCart);
+            container.append(card);
+        }
+
+        
+        
+    })
+   }
+   
+</script>

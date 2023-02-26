@@ -5,11 +5,43 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        /* *{
+            background-color: aqua;
+        }
+        div{
+            border: 5px;
+            border-color: red;
+            background-color: antiquewhite;
+            display: flex;
+            justify-content:center;
+            align-items:center;
+            text-align: center;
+            width: 500px;
+        } */
+        *{
+            background-color: antiquewhite;
+        }
+        #profile{
+            display: flex;
+            text-align: center;
+            justify-content: center;
+            align-items:center;
+            /* height: 10px; */
+        }
+        #form{
+            width: 400px;
+            background-color: aqua;
+        }
+        label,input{
+            background-color: aqua;
+        }
+    </style>
 </head>
 <body>
     <div>
-        <h1>Login here</h1>
         <form action="" id="form">
+            <h1>Login here</h1>
             <label for="E-mail">E-mail Here:</label><br>
             <input type="email" id="email"><br>
             <label for="password">Password here:</label><br>
@@ -27,7 +59,7 @@
             email:form.email.value,
             password:form.password.value
         }
-        fetch("http://localhost:2100/user/login",{
+        fetch("https://blushing-red-swordfish.cyclic.app/user/login",{
             method:"POST",
             headers:{
                 "Content-type":"application/json"
