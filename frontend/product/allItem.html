@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="container">
+        <h1>All items here</h1>
+        <!-- <img src="https://www.yoox.com/images/items/13/13981921PB_14_f.jpg?impolicy=crop&width=387&height=490" alt="image"> -->
+    </div>
+</body>
+</html>
+<script>
+
+let data=[];
+let user='';
+// data.forEach(element => console.log(element))
+   let container=document.getElementById("container");
+
+   /** getting all items*/
+fetch("http://localhost:2100/product/")
+.then(res=>res.json())
+.then(res=>{
+    data.push(...res);
+    console.log(data);
+    display(data);
+})
+.catch(err=>{
+    console.log(err);
+})
+
+/** getting the current user*/
+fetch("http://localhost:2100/user/one",{
+            method:"POST",
+            headers:{
+                "Content-type":"application/json",
+                "authorization":localStorage.getItem("token")
+            },
+            body:JSON.stringify({})
+        })
+        .then(res=>res.json())
+        .then(res=>{
+            console.log(res);
+            // form.name.value=res.name;
+            // form.age.value=res.age;
+            user=res.email;
+            // form.gender.value=res.gender;
+        })
+        .catch(err=>console.log(err));
+
+   function display(data){
+    data.forEach(item => {
+        let card=document.createElement("div");
+        card.setAttribute("class","card");
+        let image=document.createElement("img");
+        image.setAttribute("src",`${item.url}`);
+        image.setAttribute("alt","image");
+        let title=document.createElement("h2");
+        title.innerText=item.title;
+        let price=document.createElement("h3");
+        price.innerText="Rs."+item.price;
+        let rating=document.createElement("h3");
+        rating.innerText=item.rating+"⭐";
+        let category=document.createElement("p");
+        category.innerText=item.category;
+        let details=document.createElement("details");
+        details.innerText=item.details;
+
+        if(user==='admin@gmail.com'){
+            let remove=document.createElement("button");
+            remove.innerText="delete";
+            let id=item._id;
+
+            //delete the item from card
+            remove.addEventListener("click",(e)=>{
+            e.preventDefault();
+            let payload={};
+            fetch(`http://localhost:2100/product/deleteProduct/${id}`,{
+            method:"DELETE",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify(payload)
+            })
+            .then(res=>res.json)
+            .then(res=>console.log(res))
+            .catch(err=>console.log(err))
+
+            })
+
+            //update the item from card
+            let update=document.createElement("button");
+            update.innerText="update";
+            
+            // update.addEventListener("click",(e)=>{
+            //     fetch(`http://localhost:2100/product/updateProduct/${id}`,{
+            // method:"PUT",
+            // headers:{
+            //     "Content-type":"application/json"
+            // },
+            // body:JSON.stringify(payload)
+            // })
+            // .then(res=>res.json())
+            // .then(res=>console.log(res))
+            // .catch(err=>console.log(err))
+            // })
+            update.addEventListener("click",(e)=>{
+                localStorage.setItem("productId",id);
+                window.location.href="./updateItem.html"
+            })
+
+            card.append(image,title,rating,price,category,details,update,remove);
+            container.append(card);
+        }else{
+            let addToCart=document.createElement("button");
+            addToCart.innerText="addToCart";
+            card.append(image,title,rating,price,category,details,addToCart);
+        container.append(card);
+        }
+
+        
+        
+    })
+   }
+   
+</script>

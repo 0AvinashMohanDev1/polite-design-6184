@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        
+        <form action="submit" id="form">
+            <label for="">please give product id here</label><br>
+            <input type="text" required id="item" placeholder="product id"><br>
+            <label for="">add url link here:</label><br>
+            <input type="text"  id="url" placeholder="enter product link"><br>
+            <label for="">add rating here:</label><br>
+            <input type="number"  id="rating" placeholder="enter rating here"><br>
+            <label for="">add title here:</label><br>
+            <input type="text"  id="title" placeholder="enter title here"><br>
+            <label for="">Price here:</label><br>
+            <input type="number"  id="price" placeholder="enter price here"><br>
+            <label for="">Category here:</label><br>
+            <input type="text"  id="category" placeholder="enter category here"><br>
+            <label for="">details here:</label><br>
+            <input type="text"  id="details" placeholder="enter details here"><br>
+            <label for="">No. of items here:</label><br>
+            <input type="number" id="count" placeholder="please enter count of itmes here"><br>
+            <input type="submit">
+        </form>
+    </div>
+</body>
+</html>
+<script>
+    let form=document.getElementById("form");
+    let PID=localStorage.getItem("productId")
+        // console.log(PID+" outer");
+        
+        if(PID){
+            form.item.value=PID;
+            // console.log(PID+" inner");
+        }
+
+    form.addEventListener("submit",(e)=>{
+        e.preventDefault();
+        let payload={};
+        let id=form.item.value;
+        if(form.title.value) payload.title=form.title.value;
+        if(form.rating.value) payload.rating=form.rating.value;
+        if(form.price.value) payload.price=form.price.value
+        if(form.category.value) payload.category=form.category.value
+        if(form.details.value) payload.details=form.details.value
+        if(form.count.value) payload.count=form.count.value
+        if(form.url.value) payload.url=form.url.value
+        console.log(payload,id);
+        fetch(`http://localhost:2100/product/updateProduct/${id}`,{
+            method:"PUT",
+            headers:{
+                "Content-type":"application/json"
+            },
+            body:JSON.stringify(payload)
+        })
+        .then(res=>res.json())
+        .then(res=>{
+            id="";
+            localStorage.setItem("productId",id);
+            console.log(res)})
+        .catch(err=>console.log(err))
+    })
+</script>

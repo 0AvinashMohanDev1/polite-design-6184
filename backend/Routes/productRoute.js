@@ -9,7 +9,7 @@ product.get("/",async(req,res)=>{
         let data= await ProductModel.find();
         res.send(data);
     }catch(err){
-        console.lof({"error":err.message})
+        console.log({"error":err.message})
     }
 })
 
@@ -41,7 +41,7 @@ product.put("/updateProduct/:id",async(req,res)=>{
         // let data=await ProductModel.find({_id:productId});
         // res.send(data);
         let data=await ProductModel.findByIdAndUpdate({_id:productId},req.body);
-        res.send({"msg":"item deleted","data":data})
+        res.send({"msg":"item updated","data":data})
     }catch(err){
         res.send({"error":err})
     }
