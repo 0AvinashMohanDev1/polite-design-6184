@@ -5,16 +5,33 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        *{
+            background-color: antiquewhite;
+        }
+        #profile{
+            display: flex;
+            text-align: center;
+            justify-content: center;
+            /* height: 10px; */
+        }
+        #form{
+            width: 400px;
+            background-color: aqua;
+        }
+        label,input{
+            background-color: aqua;
+        }
+    </style>
 </head>
-    <body>
-        <h1>Update Here</h1>
+
+    <body id="profile">
         <form id="form" action="">
-            <label for="Sign up">Sign Up:</label><br>
+            <h1 style="background-color: aqua;">Update Here</h1>
+            <label for="Sign up">Name:</label><br>
             <input type="text" id="name" placeholder="Enter your name here"><br>
             <label for="Email">E-mail:</label><br>
             <input type="email" name="email" id="email" placeholder="Enter upur email here"><br>
-            <label for="password">Password:</label><br>
-            <input type="password" id="password" name="password" placeholder="Enter your password here"><br>
             <label for="age">Age:</label><br>
             <input type="number" id="age" name="Age" placeholder="Enter your age here"><br>
             <label for="Gender">Gender:</label><br>
@@ -34,7 +51,7 @@
         if(form.email.value) payload.email=form.email.value;
         if(form.password.value) payload.password=form.password.value;
         if(payload){
-            fetch("http://localhost:2100/user/update",{
+            fetch("https://blushing-red-swordfish.cyclic.app/user/update",{
             method:"PUT",
             headers:{
                 // "Content-type":"application/json",

@@ -2,7 +2,7 @@ const express=require("express");
 const {UserModel}=require("../Models/userModel");
 const bcrypt=require("bcrypt");
 const jwt=require("jsonwebtoken");
-const {authentication}=require("../Middleware/userAuthentication")
+const {authentication}=require("../Middleware/userAuthentication");
 
 const user=express.Router();
 
@@ -47,11 +47,11 @@ user.post("/register",async(req,res)=>{
 user.post("/login",async(req,res)=>{
     try{
         let payload=req.body;
-        console.log(payload);
+        // console.log(payload);
         let data=await UserModel.find({$and:[{"email":payload.email}]});
         // res.send(data);
         if(data.length>0){
-            console.log(data)
+            // console.log(data)
             bcrypt.compare(payload.password,data[0].password,(err,result)=>{
                 console.log(result);
                 if(result){
@@ -72,10 +72,10 @@ user.post("/login",async(req,res)=>{
 /** showing the current logged user data */
 
 user.post("/one",authentication,async(req,res)=>{
-    console.log(req.body,"hello i am body");
+    // console.log(req.body,"hello i am body");
     try{
         let data=await UserModel.findById({"_id":req.body.userID});
-        console.log(data);
+        // console.log(data);
         res.send(data);
     }catch(err){
         res.send({"error":err.message});
